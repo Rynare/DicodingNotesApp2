@@ -114,6 +114,28 @@ export function deleteNote(note_id) {
         .catch(error => { throw new Error(`Error delete Note [id: ${note_id}]:`, error) });
 }
 
+
+/**
+ * Creates a new note.
+ * @param {object} data - Data untuk note baru.
+ * @param {string} data.title - Data untuk judul note baru.
+ * @param {string} data.body - Data untuk isi note baru.
+ * @param {boolean} data.archived - True untuk archive dan false untuk unarchieve.
+ * @returns {Promise<object>} Function ini mengembalikan promise.
+ * @throws {Error} Function ini akan mengembalikan error jika gagal membuat note baru.
+ * @example
+ * Contoh penggunaan:
+ * createNote({
+ *     title: "Title/Judul note",
+ *     body: "Body/Isi note",
+ *     archived: false
+ * }).then(note => {
+ *     console.log("Note created:", note);
+ * }).catch(error => {
+ *     console.error("Error creating note:", error);
+ * });
+ */
+
 export function createNote(data) {
     if (!data) {
         throw new Error('Missing param createNote(?): data note baru kosong! harap isi data note baru')
