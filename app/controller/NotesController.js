@@ -1,138 +1,12 @@
 const endpoint = 'https://notes-api.dicoding.dev/v2';
 
-export function getNotes() {
-    return fetch(`${endpoint}/notes`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
-            }
-            const result = response.json()
-            if (result.error) {
-                throw new Error(`JSON parse error!: ${result.message}`)
-            } else {
-                return result
-            }
-        })
-        .catch(error => { throw new Error('Error fetching notes:', error) })
-}
-
-export function getArchivedNotes() {
-    return fetch(`${endpoint}/notes/archived`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
-            }
-            const result = response.json()
-            if (result.error) {
-                throw new Error(`JSON parse error!: ${result.message}`)
-            } else {
-                return result
-            }
-        })
-        .catch(error => { throw new Error('Error fetching archived notes:', error) })
-}
-
-export function getNoteById(note_id) {
-    if (!note_id) {
-        throw new Error('Missing param getNoteById(?): note_id kosong! harap isi note_id')
-    }
-    return fetch(`${endpoint}/notes/${note_id}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
-            }
-            const result = response.json()
-            if (result.error) {
-                throw new Error(`JSON parse error!: ${result.message}`)
-            } else {
-                return result
-            }
-        })
-        .catch(error => { throw new Error(`Error fetching Note [id: ${note_id}]:`, error) })
-}
-
-export function setArchiveNote(note_id) {
-    if (!note_id) {
-        throw new Error('Missing param setArchiveNote(?): note_id kosong! harap isi note_id')
-    }
-    return fetch(`${endpoint}/notes/${note_id}/archive`, {
-        method: 'POST'
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
-            }
-            const result = response.json()
-            if (result.error) {
-                throw new Error(`JSON parse error!: ${result.message}`)
-            } else {
-                return result.message
-            }
-        })
-        .catch(error => { throw new Error(`Error Archieve Note [id: ${note_id}]:`, error) })
-}
-
-export function setUnarchiveNote(note_id) {
-    if (!note_id) {
-        throw new Error('Missing param setUnarchiveNote(?): note_id kosong! harap isi note_id')
-    }
-    return fetch(`${endpoint}/notes/${note_id}/unarchive`, {
-        method: 'POST'
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
-            }
-            const result = response.json()
-            if (result.error) {
-                throw new Error(`JSON parse error!: ${result.message}`)
-            } else {
-                return result.message
-            }
-        })
-        .catch(error => { throw new Error(`Error Unarchieve Note [id: ${note_id}]:`, error) })
-}
-
-export function deleteNote(note_id) {
-    if (!note_id) {
-        throw new Error('Missing param deleteNote(?): note_id kosong! harap isi note_id')
-    }
-
-    return fetch(`${endpoint}/notes/${note_id}`, {
-        method: 'DELETE'
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
-        }
-        const result = response.json()
-        if (result.error) {
-            throw new Error(`JSON parse error!: ${result.message}`)
-        } else {
-            return result.message
-        }
-    })
-        .catch(error => { throw new Error(`Error delete Note [id: ${note_id}]:`, error) });
-}
-
-
 /**
- * Creates a new note.
+ **Creates a new note.
  * @param {object} data - Data untuk note baru.
  * @param {string} data.title - Data untuk judul note baru.
  * @param {string} data.body - Data untuk isi note baru.
  * @returns {Promise<object>} Function ini mengembalikan promise.
  * @throws {Error} Function ini akan mengembalikan error jika gagal membuat note baru.
- * 
- * @example
- * Contoh penggunaan:
- * createNote({
- *     title: "Title/Judul note",
- *     body: "Body/Isi note"
- * }).then(note => {
- *     console.log("Note created:", note);
- * }).catch(error => {
- *     console.error("Error creating note:", error);
- * });
  * 
  * @example
  * contoh return ketika sukses
@@ -177,4 +51,224 @@ export function createNote(data) {
         }
     })
         .catch(error => { throw new Error(`Error Create New Note:`, error) });
+}
+
+/**
+ **Get Notes data.
+ * @returns {Promise<object>} Function ini mengembalikan promise.
+ * @throws {Error} Function ini akan mengembalikan error jika gagal membuat note baru.
+ * 
+ * @example
+ * contoh return ketika sukses
+ * {
+ *   "status": "success",
+ *   "message": "Note retrieved",
+ *   "data": {
+ *       "id": "notes-jT-jjsyz61J8XKiI",
+ *       "title": "Welcome to Notes, Dimas!",
+ *       "body": "Welcome to Notes! This is your first note. You can archive it, delete it, or create new ones.",
+ *       "createdAt": "2022-07-28T10:03:12.594Z",
+ *       "archived": false
+ *   }
+ * }
+ */
+
+export function getNotes() {
+    return fetch(`${endpoint}/notes`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+            const result = response.json()
+            if (result.error) {
+                throw new Error(`JSON parse error!: ${result.message}`)
+            } else {
+                return result
+            }
+        })
+        .catch(error => { throw new Error('Error fetching notes:', error) })
+}
+
+/**
+ **Get Archieve Note.
+ * @returns {Promise<object>} Function ini mengembalikan promise.
+ * @throws {Error} Function ini akan mengembalikan error jika gagal membuat note baru.
+ * 
+ * @example
+ * contoh return ketika sukses
+ * {
+ *   "status": "success",
+ *   "message": "Notes retrieved",
+ *   "data": [
+ *       {
+ *           "id": "notes-jT-jjsyz61J8XKiI",
+ *           "title": "Welcome to Notes, Dimas!",
+ *           "body": "Welcome to Notes! This is your first note. You can archive it, delete it, or create new ones.",
+ *           "createdAt": "2022-07-28T10:03:12.594Z",
+ *           "archived": true
+ *       }
+ *   ]
+ * }
+ */
+
+export function getArchivedNotes() {
+    return fetch(`${endpoint}/notes/archived`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+            const result = response.json()
+            if (result.error) {
+                throw new Error(`JSON parse error!: ${result.message}`)
+            } else {
+                return result
+            }
+        })
+        .catch(error => { throw new Error('Error fetching archived notes:', error) })
+}
+
+
+/**
+ **Get Single note by ID.
+ * @param {string} note_id - ID note yang ingin di tampilkan/diambil.
+ * @returns {Promise<object>} Function ini mengembalikan promise.
+ * @throws {Error} Function ini akan mengembalikan error jika gagal membuat note baru.
+ * 
+ * @example
+ * contoh return ketika sukses
+ * {
+ *   "status": "success",
+ *   "message": "Note retrieved",
+ *   "data": {
+ *       "id": "notes-jT-jjsyz61J8XKiI",
+ *       "title": "Welcome to Notes, Dimas!",
+ *       "body": "Welcome to Notes! This is your first note. You can archive it, delete it, or create new ones.",
+ *       "createdAt": "2022-07-28T10:03:12.594Z",
+ *       "archived": false
+ *   }
+ * }
+ */
+
+export function getNoteById(note_id) {
+    if (!note_id) {
+        throw new Error('Missing param getNoteById(?): note_id kosong! harap isi note_id')
+    }
+    return fetch(`${endpoint}/notes/${note_id}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+            const result = response.json()
+            if (result.error) {
+                throw new Error(`JSON parse error!: ${result.message}`)
+            } else {
+                return result
+            }
+        })
+        .catch(error => { throw new Error(`Error fetching Note [id: ${note_id}]:`, error) })
+}
+
+/**
+ **Set Archieve note.
+ * @param {string} note_id - ID note yang ingin diarchieve/diarsipkan.
+ * @returns {Promise<object>} Function ini mengembalikan promise.
+ * @throws {Error} Function ini akan mengembalikan error jika gagal membuat note baru.
+ * 
+ * @example
+ * contoh return ketika sukses
+ * {
+ *  "status": "success",
+ *  "message": "Note archived"
+ * }
+ */
+
+export function setArchiveNote(note_id) {
+    if (!note_id) {
+        throw new Error('Missing param setArchiveNote(?): note_id kosong! harap isi note_id')
+    }
+    return fetch(`${endpoint}/notes/${note_id}/archive`, {
+        method: 'POST'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+            const result = response.json()
+            if (result.error) {
+                throw new Error(`JSON parse error!: ${result.message}`)
+            } else {
+                return result.message
+            }
+        })
+        .catch(error => { throw new Error(`Error Archieve Note [id: ${note_id}]:`, error) })
+}
+
+/**
+ **Unarchieve note.
+ * @param {string} note_id - ID note yang ingin di keluarkan dari archieve/arsip.
+ * @returns {Promise<object>} Function ini mengembalikan promise.
+ * @throws {Error} Function ini akan mengembalikan error jika gagal membuat note baru.
+ * 
+ * @example
+ * contoh return ketika sukses
+ * {
+ *  "status": "success",
+ *  "message": "Note unarchived"
+ * }
+ */
+
+export function setUnarchiveNote(note_id) {
+    if (!note_id) {
+        throw new Error('Missing param setUnarchiveNote(?): note_id kosong! harap isi note_id')
+    }
+    return fetch(`${endpoint}/notes/${note_id}/unarchive`, {
+        method: 'POST'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+            const result = response.json()
+            if (result.error) {
+                throw new Error(`JSON parse error!: ${result.message}`)
+            } else {
+                return result.message
+            }
+        })
+        .catch(error => { throw new Error(`Error Unarchieve Note [id: ${note_id}]:`, error) })
+}
+
+/**
+ **Delete note.
+ * @param {string} note_id - ID note yang ingin dihapus.
+ * @returns {Promise<object>} Function ini mengembalikan promise.
+ * @throws {Error} Function ini akan mengembalikan error jika gagal membuat note baru.
+ * 
+ * @example
+ * contoh return ketika sukses
+ * {
+ *  "status": "success",
+ *  "message": "Note deleted"
+ * }
+ */
+
+export function deleteNote(note_id) {
+    if (!note_id) {
+        throw new Error('Missing param deleteNote(?): note_id kosong! harap isi note_id')
+    }
+
+    return fetch(`${endpoint}/notes/${note_id}`, {
+        method: 'DELETE'
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const result = response.json()
+        if (result.error) {
+            throw new Error(`JSON parse error!: ${result.message}`)
+        } else {
+            return result.message
+        }
+    })
+        .catch(error => { throw new Error(`Error delete Note [id: ${note_id}]:`, error) });
 }
