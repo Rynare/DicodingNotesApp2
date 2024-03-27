@@ -120,20 +120,33 @@ export function deleteNote(note_id) {
  * @param {object} data - Data untuk note baru.
  * @param {string} data.title - Data untuk judul note baru.
  * @param {string} data.body - Data untuk isi note baru.
- * @param {boolean} data.archived - True untuk archive dan false untuk unarchieve.
  * @returns {Promise<object>} Function ini mengembalikan promise.
  * @throws {Error} Function ini akan mengembalikan error jika gagal membuat note baru.
+ * 
  * @example
  * Contoh penggunaan:
  * createNote({
  *     title: "Title/Judul note",
- *     body: "Body/Isi note",
- *     archived: false
+ *     body: "Body/Isi note"
  * }).then(note => {
  *     console.log("Note created:", note);
  * }).catch(error => {
  *     console.error("Error creating note:", error);
  * });
+ * 
+ * @example
+ * contoh return ketika sukses
+ * {
+ *  "status": "success",
+ *  "message": "Note created",
+ *  "data": {
+ *      "id": "notes-_O6A6TJcCYUWO7t4",
+ *      "title": "Hello, Notes!",
+ *      "body": "My new notes.",
+ *      "archived": false,
+ *      "createdAt": "2022-07-28T10:12:12.396Z"
+ *  }
+ * }
  */
 
 export function createNote(data) {
