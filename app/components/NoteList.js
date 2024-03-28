@@ -1,6 +1,12 @@
 import { getSortedByCreateAtAsc, getSortedByCreateAtDesc, notesData } from "../../notes-data.js";
+import { getNotes } from "../controller/NotesController.js";
 export class NoteList extends HTMLElement {
-    static observedAttributes = ["selected-note-item", "active-note-item", 'refresh', "sort-by"];
+    static observedAttributes = [
+        "selected-note-item",
+        "active-note-item",
+        'refresh',
+        // "sort-by"
+    ];
 
     constructor() {
         super()
@@ -12,26 +18,24 @@ export class NoteList extends HTMLElement {
     }
 
 
-    render() {
-        this.innerHTML = ''
-        let data
-        switch (this.getAttribute('sort-by')) {
-            case 'terbaru':
-                data = getSortedByCreateAtDesc()
-                break;
-            case 'terlama':
-                data = getSortedByCreateAtAsc()
-                break;
-            default:
-                data = notesData;
-                break;
+    async render() {
+        this.innerHTML = '';
+        try {
+            let notes = await getNotes();
+            if (notes.data.length >= 1) {
+                notes.data.forEach(obj => {
+                    const note_item = document.createElement('note-item');
+                    note_item.setAttribute('note-item-id', obj.id);
+                    this.appendChild(note_item);
+                });
+            } else {
+                this.innerHTML = `
+                    <div style="margin:auto 0; text-align:center;">Tidak ada notes, ingin membuat notes baru?</div>
+                `;
+            }
+        } catch (error) {
+            console.error('Error rendering notes:', error);
         }
-
-        data.forEach(obj => {
-            const note_item = document.createElement('note-item')
-            note_item.setAttribute(`note-item-id`, obj['id'])
-            this.appendChild(note_item)
-        })
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
