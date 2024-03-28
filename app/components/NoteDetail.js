@@ -1,4 +1,4 @@
-import { addNote, findNoteById, getSortedByCreateAtAsc, updateNoteById } from '../../notes-data.js'
+import { createNote, getNoteById } from '../controller/NotesController.js'
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -10,8 +10,9 @@ template.innerHTML = `
         </div>
     </header>
     <div id="detail-container">
-        <input id="detail-title" required placeholder="Judul" name="title">
-        <textarea id="detail-body" placeholder="Isi Catatan" name="body"></textarea>
+        <input id="detail-title" required placeholder="Judul" name="title" type="text" autocomplete="note-title"
+            inputmode="text" minlength="1">
+        <textarea id="detail-body" placeholder="Isi Catatan" name="body" autocomplete="note-body" inputmode="text" ></textarea>
     </div>
 </form>
 `
@@ -42,13 +43,13 @@ export class NoteDetail extends HTMLElement {
         detail_body.value = body
     }
 
-    attributeChangedCallback(name, oldValue, newValue) {
+    async attributeChangedCallback(name, oldValue, newValue) {
         switch (name) {
             case 'note-id':
                 newValue = newValue.trim();
-                const data = findNoteById(newValue)
-                if ((newValue != '' || newValue != null || newValue != undefined) && data) {
-                    this.render(data.title, data.body)
+                const note = await getNoteById(newValue)
+                if ((newValue != '' || newValue != null || newValue != undefined) && note) {
+                    this.render(note.data.title, note.data.body)
                     this.classList.add('active')
                 } else {
                     this.render()
@@ -93,8 +94,13 @@ export class NoteDetail extends HTMLElement {
                 data[key] = value;
             });
             if (this.getAttribute('note-id') == 'new' || this.getAttribute('note-id') == '' || this.getAttribute('note-id') == null) {
-                const new_note = addNote(data)
-                this.setAttribute('note-id', new_note.id)
+                createNote(data)
+                    .then(status => {
+                        this.setAttribute('note-id', status.data.id)
+                    })
+                    .catch(error => {
+                        console.error('Error creating note:', error);
+                    });
             } else {
                 updateNoteById(this.getAttribute('note-id'), data)
             }
