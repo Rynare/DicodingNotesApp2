@@ -1,12 +1,20 @@
 import { findNoteById, formatDate } from '../../notes-data.js'
-import { getNoteById } from '../controller/NotesHandler.js'
+import { deleteNote, getNoteById, setArchiveNote } from '../controller/NotesHandler.js'
+import { NoteOption } from './NoteOption.js'
+customElements.define('note-option', NoteOption)
 
 const template = document.createElement('template')
 template.innerHTML = `
-<div>
-    <p class="note-item-title">Title</p>
-    <p class="note-item-body">Body</p>
-    <p class="note-item-createAt">Created At:</p>
+<div style="position: relative">
+    <div class="note-item-card">
+        <p class="note-item-title">Title</p>
+        <p class="note-item-body">Body</p>
+        <p class="note-item-createAt">Created At:</p>
+    </div>
+    <note-option style="position:absolute; color: black; top:20px; right:20px; border-radius: 100%; width: 24px; height: 24px; display:flex; align-items:center; justify-content:center;">
+        <note-option-menu slot="option-menu" value="hapus" bs-icon="bi bi-trash" text="Hapus" style="background-color:red;  padding: 4px 10px;border-radius:4px; color:white;"></note-option-menu>
+        <note-option-menu slot="option-menu" value="arsipkan" bs-icon="bi bi-folder" text="Archieve"  style="background-color:orange; padding: 4px 10px;border-radius:4px; color:white;"></note-option-menu>
+    </note-option>
 </div>
 `
 
@@ -16,16 +24,18 @@ export class NoteItem extends HTMLElement {
     }
 
     connectedCallback() {
+        this.id = this.getAttribute('note-item-id')
         this.render()
-        this.runClickEvent()
     }
 
     render() {
         const newTemplate = template.content.cloneNode(true);
 
-        getNoteById(this.getAttribute('note-item-id')).then(
+        getNoteById(this.id).then(
             result => {
                 // console.log('note-item', result.data.id)
+                const note_card = newTemplate.querySelector('.note-item-card')
+                const note_option = newTemplate.querySelector('note-option')
                 const note_title = newTemplate.querySelector('.note-item-title')
                 const note_body = newTemplate.querySelector('.note-item-body')
                 const note_createAt = newTemplate.querySelector('.note-item-createAt')
@@ -34,6 +44,9 @@ export class NoteItem extends HTMLElement {
                 note_body.innerText = result.data.body
                 note_createAt.innerText = formatDate(result.data.createdAt).replace('pukul', ' | ')
 
+                this.runClickEvent(note_card)
+                this.runOptionEvent(note_option)
+
                 // console.log('note-item', result.data.id, 'end')
                 this.appendChild(newTemplate);
             }
@@ -41,11 +54,34 @@ export class NoteItem extends HTMLElement {
 
     }
 
-    runClickEvent() {
-        this.addEventListener('click', (event) => {
+    runClickEvent(element) {
+        element.addEventListener('click', (event) => {
             const note_detail = document.querySelector('note-detail')
-            note_detail.setAttribute('note-id', this.getAttribute('note-item-id'))
-            this.parentElement.setAttribute('active-note-item', `[note-item-id=${this.getAttribute('note-item-id')}]`)
+            note_detail.setAttribute('note-id', this.id)
+            this.parentElement.setAttribute('active-note-item', `[note-item-id=${this.id}]`)
+        })
+    }
+
+    runOptionEvent(element) {
+        element.addEventListener('note-option-changed', event => {
+            switch (event.detail.noteOption) {
+                case 'hapus':
+                    deleteNote(this.id).then(result => {
+                        if (result.status = 'success') {
+                            document.querySelector('note-list').setAttribute('refresh', true)
+                        }
+                    }).catch(error => console.error(error))
+                    break;
+                case 'arsipkan':
+                    setArchiveNote(this.id).then(result => {
+                        if (result.status = 'success') {
+                            document.querySelector('note-list').setAttribute('refresh', true)
+                        }
+                    }).catch(error => console.error(error))
+                    break;
+                default:
+                    break;
+            }
         })
     }
 }

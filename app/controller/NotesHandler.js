@@ -280,7 +280,6 @@ export function updateNoteById(note_id, new_data) {
     return deleteNote(note_id).then(result => {
         if (result.status == 'success') {
             return createNote(new_data).then(note => {
-                console.log(note)
                 return note
             }).catch(error => {
                 throw new Error(error)
