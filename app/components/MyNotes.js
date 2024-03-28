@@ -1,6 +1,6 @@
 const template = document.createElement('template')
 template.innerHTML = `
-<note-list sort-by="terbaru"></note-list>
+<note-list sort-by="terbaru" folder-type="unarchive"></note-list>
 <note-detail></note-detail>
 `;
 

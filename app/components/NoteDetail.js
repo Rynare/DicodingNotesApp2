@@ -71,7 +71,7 @@ export class NoteDetail extends HTMLElement {
         const backBtn = this.querySelector('.back-btn')
         backBtn.addEventListener('click', () => {
             this.setAttribute('note-id', '')
-            document.querySelector('note-list').setAttribute('refresh', true)
+            if (this.getAttribute('note-id' != 'new')) document.querySelector('note-list').setAttribute('refresh', true)
             this.classList.remove('active')
         })
     }

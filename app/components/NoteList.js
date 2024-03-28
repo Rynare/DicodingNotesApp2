@@ -1,10 +1,11 @@
 import { getSortedByCreateAtAsc, getSortedByCreateAtDesc, notesData } from "../../notes-data.js";
-import { getNotes } from "../controller/NotesHandler.js";
+import { getArchivedNotes, getNotes } from "../controller/NotesHandler.js";
 
 const template = document.createElement('template')
 template.innerHTML = `
 <div class="header-option">
-    <button></button>
+    <button class="see-unarchive-btn"><span class="material-symbols-outlined">unarchive</span>Lihat Unarchive Notes</button>
+    <button class="see-archive-btn"><span class="material-symbols-outlined">archive</span>Lihat Archive Notes</button>
     <button class="new-note-btn">
         <i class="bi bi-journal-bookmark-fill"></i>
         <span>Baru</span>
@@ -22,22 +23,37 @@ export class NoteList extends HTMLElement {
     static observedAttributes = [
         "selected-note-item",
         "active-note-item",
+        'folder-type',
         'refresh',
         // "sort-by"
     ];
 
     constructor() {
         super()
+        this.element = template.content.cloneNode(true)
+        this.archiveBtn = this.element.querySelector('.see-archive-btn')
+        this.unarchiveBtn = this.element.querySelector('.see-unarchive-btn')
     }
 
     connectedCallback() {
-        this.appendChild(template.content.cloneNode(true))
+        this.appendChild(this.element)
+        this.archiveBtn = this.querySelector('.see-archive-btn')
+        this.unarchiveBtn = this.querySelector('.see-unarchive-btn')
         this.renderNotes()
         this.runNewNoteEvent()
         this.runSortChangeEvent()
+        this.runArchiveToggle()
     }
 
     renderNotes() {
+        if (this.getAttribute('folder-type') == 'archive') {
+            this.renderArchiveNotes()
+        } else {
+            this.renderUnarchiveNotes()
+        }
+    }
+
+    renderUnarchiveNotes() {
         const notesContainer = this.querySelector('.notes-container');
         notesContainer.innerHTML = '';
         getNotes().then(notes => {
@@ -60,11 +76,44 @@ export class NoteList extends HTMLElement {
         });
     }
 
+    renderArchiveNotes() {
+        const notesContainer = this.querySelector('.notes-container');
+        notesContainer.innerHTML = '';
+        getArchivedNotes().then(notes => {
+            if (notes.data.length >= 1) {
+                notes.data.forEach(obj => {
+                    const note_item = document.createElement('note-item');
+                    note_item.setAttribute('note-item-id', obj.id);
+                    notesContainer.appendChild(note_item);
+                });
+            } else {
+                notesContainer.innerHTML = (`
+                        <div style="margin:auto 0; text-align:center;">Tidak ada notes yang diarsipkan</div>
+                    `)
+            }
+        }).catch(error => {
+            console.error('Error rendering notes:', error)
+            notesContainer.innerHTML = (`
+                        <div style="margin:auto 0; text-align:center;">Tidak ada notes yang diarsipkan</div>
+                    `)
+        });
+    }
+
     attributeChangedCallback(name, oldValue, newValue) {
         switch (name) {
             case 'selected-note-item':
                 break
             case 'sort-by':
+                this.renderUnarchiveNotes()
+                break
+            case 'folder-type':
+                if (newValue == 'archive') {
+                    this.archiveBtn.style.display = "none"
+                    this.unarchiveBtn.style.display = ""
+                } else {
+                    this.archiveBtn.style.display = ""
+                    this.unarchiveBtn.style.display = "none"
+                }
                 this.renderNotes()
                 break
             case 'refresh':
@@ -100,5 +149,10 @@ export class NoteList extends HTMLElement {
         btn.addEventListener('click', () => {
             document.querySelector('note-detail').setAttribute('note-id', 'new')
         })
+    }
+
+    runArchiveToggle() {
+        this.archiveBtn.addEventListener('click', () => this.setAttribute('folder-type', 'archive'))
+        this.unarchiveBtn.addEventListener('click', () => this.setAttribute('folder-type', 'unarchive'))
     }
 }

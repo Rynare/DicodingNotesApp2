@@ -110,11 +110,15 @@ body {
 note-list {
     min-height: calc(100vh - 71px);
     max-height: calc(100vh - 70.1px);
-    overflow-y: auto;
+    overflow-y: hidden;
     display: flex;
     flex-direction: column;
     min-width: 300px;
     /* max-width: 360px; */
+}
+
+note-list :is(.see-unarchive-btn, .see-archive-btn) {
+    flex-grow: 1;
 }
 
 note-list .notes-container {
