@@ -47,12 +47,18 @@ export class NoteDetail extends HTMLElement {
         switch (name) {
             case 'note-id':
                 newValue = newValue.trim();
-                const note = await getNoteById(newValue)
-                if ((newValue != '' || newValue != null || newValue != undefined) && note) {
-                    this.render(note.data.title, note.data.body)
+                if ((newValue == '' || newValue == null || newValue == undefined) || newValue == 'new') {
+                    this.render()
                     this.classList.add('active')
                 } else {
-                    this.render()
+                    const note = await getNoteById(newValue)
+                    if (note.data == null) {
+                        document.querySelector(`note-list`).setAttribute('refresh', true)
+                        this.render()
+                        this.setAttribute(name, '')
+                        return
+                    }
+                    this.render(note.data.title, note.data.body)
                     this.classList.add('active')
                 }
                 break
