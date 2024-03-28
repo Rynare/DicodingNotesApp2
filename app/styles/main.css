@@ -36,7 +36,8 @@ body {
     gap: 10px;
 }
 
-note-header {
+#content>header {
+    text-align: center;
     color: var(---green-color);
     text-align: center;
     padding: 0 10px;
@@ -44,18 +45,32 @@ note-header {
     top: 0;
     background-color: white;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 24px;
+    min-height: 60.1px;
+    max-height: 60.1px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
 }
 
-note-header .header-option {
+#content>header h3 {
+    margin: 0;
+}
+
+[is=my-notes] .header-option {
     display: flex;
     column-gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    margin-bottom: 10px;
+    background-color: #f3f2f8;
+    padding: 5px;
+    border-bottom: .1px solid grey;
 }
 
-note-header button,
-note-header sort-note {
+[is=my-notes] note-list button,
+[is=my-notes] note-list sort-note {
     color: white;
     background-color: var(---bg-header-light);
     height: fit-content;
@@ -73,12 +88,12 @@ note-header sort-note {
     column-gap: 4px;
 }
 
-note-header sort-note {
+[is=my-notes] sort-note {
     display: block;
     height: fit-content;
 }
 
-note-header button i {
+[is=my-notes] button i {
     font-weight: bold;
     font-size: large;
 }
@@ -98,6 +113,16 @@ note-list {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    min-width: 300px;
+    /* max-width: 360px; */
+}
+
+note-list .notes-container {
+    min-height: calc(100vh - 71px - 52.67px);
+    max-height: calc(100vh - 70.1px - 52.67px);
+    overflow-y: auto;
+    padding-right: 5px;
+
 }
 
 note-item div {
