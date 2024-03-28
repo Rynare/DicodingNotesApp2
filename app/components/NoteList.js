@@ -1,5 +1,5 @@
 import { getSortedByCreateAtAsc, getSortedByCreateAtDesc, notesData } from "../../notes-data.js";
-import { getNotes } from "../controller/NotesController.js";
+import { getNotes } from "../controller/NotesHandler.js";
 export class NoteList extends HTMLElement {
     static observedAttributes = [
         "selected-note-item",
@@ -18,10 +18,9 @@ export class NoteList extends HTMLElement {
     }
 
 
-    async render() {
+    render() {
         this.innerHTML = '';
-        try {
-            let notes = await getNotes();
+        getNotes().then(notes => {
             if (notes.data.length >= 1) {
                 notes.data.forEach(obj => {
                     const note_item = document.createElement('note-item');
@@ -30,12 +29,15 @@ export class NoteList extends HTMLElement {
                 });
             } else {
                 this.innerHTML = `
-                    <div style="margin:auto 0; text-align:center;">Tidak ada notes, ingin membuat notes baru?</div>
-                `;
+                        <div style="margin:auto 0; text-align:center;">Tidak ada notes, ingin membuat notes baru?</div>
+                    `;
             }
-        } catch (error) {
-            console.error('Error rendering notes:', error);
-        }
+        }).catch(error => {
+            console.error('Error rendering notes:', error)
+            this.innerHTML = `
+                        <div style="margin:auto 0; text-align:center;">Tidak ada notes, ingin membuat notes baru?</div>
+                    `;
+        });
     }
 
     attributeChangedCallback(name, oldValue, newValue) {

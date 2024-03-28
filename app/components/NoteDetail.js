@@ -1,4 +1,4 @@
-import { createNote, getNoteById } from '../controller/NotesController.js'
+import { createNote, getNoteById, updateNoteById } from '../controller/NotesHandler.js'
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -87,7 +87,6 @@ export class NoteDetail extends HTMLElement {
         const submitBtn = this.querySelector('#save-btn')
         form.addEventListener('submit', (event) => {
             event.preventDefault()
-            console.log(this.getAttribute('note-id'))
             const formData = new FormData(form, submitBtn)
             const data = {};
             formData.forEach((value, key) => {
@@ -97,15 +96,20 @@ export class NoteDetail extends HTMLElement {
                 createNote(data)
                     .then(status => {
                         this.setAttribute('note-id', status.data.id)
+                        if (window.innerWidth >= 768) {
+                            document.querySelector('note-list').setAttribute('refresh', true)
+                        }
                     })
                     .catch(error => {
                         console.error('Error creating note:', error);
                     });
             } else {
-                updateNoteById(this.getAttribute('note-id'), data)
-            }
-            if (window.innerWidth >= 768) {
-                document.querySelector('note-list').setAttribute('refresh', true)
+                updateNoteById(this.getAttribute('note-id'), data).then(newNote => {
+                    this.setAttribute('note-id', newNote.data.id)
+                    if (window.innerWidth >= 768) {
+                        document.querySelector('note-list').setAttribute('refresh', true)
+                    }
+                })
             }
         })
     }
