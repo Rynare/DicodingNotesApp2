@@ -6,6 +6,11 @@ template.innerHTML = `
             box-sizing: border-box !important;
         }
 
+        .sort-container{
+            width:fit-content;
+            position:relative;
+        }
+
         button.sort-btn {
             color: white;
             background-color: transparent;
@@ -18,16 +23,15 @@ template.innerHTML = `
             -ms-border-radius: 4px;
             -o-border-radius: 4px;
             font-size: 16px;
-            position:relative;
         }
 
         .sort-menu {
             position: absolute;
+            padding: 5px 7px;
             color: black;
             flex-direction: column;
-            right: 10px;
+            right: 0px;
             background-color: white;
-            padding: 5px 7px;
             margin-top: 10px;
             box-shadow: 0px 2px 3px 0px grey;
             border-radius: 5px;

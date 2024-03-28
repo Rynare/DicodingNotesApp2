@@ -11,7 +11,7 @@ export class SortItemMode extends HTMLElement {
     render() {
         const template = document.createElement('template')
         template.innerHTML = `
-            <i class="${this.getAttribute('icon')}"></i>
+            <i class="${this.getAttribute('bs-icon')}"></i>
             <span>${this.getAttribute('text')}</span>
         `
         this.appendChild(template.content.cloneNode(true))
