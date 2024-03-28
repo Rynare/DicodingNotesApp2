@@ -1,0 +1,12 @@
+{
+  "name": "dicoding_submission-notesapp-rest",
+  "version": "1.0.0",
+  "description": "Link website [NotesApp Basic - Klik](https://rynare.github.io/dicoding_submission-notesApp/)",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
