@@ -92,6 +92,14 @@ note-header button i {
     display: none;
 }
 
+note-list {
+    min-height: calc(100vh - 71px);
+    max-height: calc(100vh - 70.1px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
 note-item div {
     padding: 10px;
     display: flex;
