@@ -37,20 +37,21 @@ export function createNote(data) {
         },
         body: JSON.stringify({
             title: data.title,
-            author: data.body
+            body: data.body // Perbaikan: Menggunakan body: data.body
         })
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`)
-        }
-        const result = response.json()
-        if (result.error) {
-            throw new Error(`JSON parse error!: ${result.message}`)
-        } else {
-            return result
-        }
     })
-        .catch(error => { throw new Error(`Error Create New Note:`, error) });
+        .then(async response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+            const result = await response.json(); // Menunggu response.json()
+            if (result.error) {
+                throw new Error(`Error Create New Note: ${result.message}`); // Perbaikan: Menggunakan result.error
+            } else {
+                return result;
+            }
+        })
+        .catch(error => { throw new Error(`Error Create New Note: ${error.message}`) }); // Menambahkan pesan error jika fetch gagal
 }
 
 /**
