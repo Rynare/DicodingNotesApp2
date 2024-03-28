@@ -1,4 +1,5 @@
 import { findNoteById, formatDate } from '../../notes-data.js'
+import { getNoteById } from '../controller/NotesController.js'
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -19,18 +20,18 @@ export class NoteItem extends HTMLElement {
         this.runClickEvent()
     }
 
-    render() {
+    async render() {
         const newTemplate = template.content.cloneNode(true);
 
-        const data = findNoteById(this.getAttribute('note-item-id'))
+        const note = await getNoteById(this.getAttribute('note-item-id'))
 
         const note_title = newTemplate.querySelector('.note-item-title')
         const note_body = newTemplate.querySelector('.note-item-body')
         const note_createAt = newTemplate.querySelector('.note-item-createAt')
 
-        note_title.innerText = data.title
-        note_body.innerText = data.body
-        note_createAt.innerText = formatDate(data.createdAt).replace('pukul', ' | ')
+        note_title.innerText = note.data.title
+        note_body.innerText = note.data.body
+        note_createAt.innerText = formatDate(note.data.createdAt).replace('pukul', ' | ')
 
         this.appendChild(newTemplate);
     }
