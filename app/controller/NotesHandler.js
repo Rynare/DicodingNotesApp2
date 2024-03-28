@@ -93,7 +93,7 @@ export function getNotes() {
 }
 
 /**
- **Get Archieve Note.
+ **Get Archive Note.
  * @returns {Promise<object>} Function ini mengembalikan promise.
  * @throws {Error} Function ini akan mengembalikan error jika gagal membuat note baru.
  * 
@@ -172,8 +172,8 @@ export function getNoteById(note_id) {
 }
 
 /**
- **Set Archieve note.
- * @param {string} note_id - ID note yang ingin diarchieve/diarsipkan.
+ **Set Archive note.
+ * @param {string} note_id - ID note yang ingin diarchive/diarsipkan.
  * @returns {Promise<object>} Function ini mengembalikan promise.
  * @throws {Error} Function ini akan mengembalikan error jika gagal membuat note baru.
  * 
@@ -203,12 +203,12 @@ export function setArchiveNote(note_id) {
                 return result
             }
         })
-        .catch(error => { throw new Error(`Error Archieve Note [id: ${note_id}]:`, error) })
+        .catch(error => { throw new Error(`Error Archive Note [id: ${note_id}]:`, error) })
 }
 
 /**
- **Unarchieve note.
- * @param {string} note_id - ID note yang ingin di keluarkan dari archieve/arsip.
+ **Unarchive note.
+ * @param {string} note_id - ID note yang ingin di keluarkan dari archive/arsip.
  * @returns {Promise<object>} Function ini mengembalikan promise.
  * @throws {Error} Function ini akan mengembalikan error jika gagal membuat note baru.
  * 
@@ -238,7 +238,7 @@ export function setUnarchiveNote(note_id) {
                 return result
             }
         })
-        .catch(error => { throw new Error(`Error Unarchieve Note [id: ${note_id}]:`, error) })
+        .catch(error => { throw new Error(`Error Unarchive Note [id: ${note_id}]:`, error) })
 }
 
 /**

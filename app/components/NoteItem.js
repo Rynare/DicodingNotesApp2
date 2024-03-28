@@ -13,7 +13,7 @@ template.innerHTML = `
     </div>
     <note-option style="position:absolute; color: black; top:20px; right:20px; border-radius: 100%; width: 24px; height: 24px; display:flex; align-items:center; justify-content:center;">
         <note-option-menu slot="option-menu" value="hapus" bs-icon="bi bi-trash" text="Hapus" style="background-color:red;  padding: 4px 10px;border-radius:4px; color:white;"></note-option-menu>
-        <note-option-menu slot="option-menu" value="arsipkan" bs-icon="bi bi-folder" text="Archieve"  style="background-color:orange; padding: 4px 10px;border-radius:4px; color:white;"></note-option-menu>
+        <note-option-menu slot="option-menu" value="arsipkan" bs-icon="bi bi-folder" text="Archive"  style="background-color:orange; padding: 4px 10px;border-radius:4px; color:white;"></note-option-menu>
     </note-option>
 </div>
 `

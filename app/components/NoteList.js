@@ -4,6 +4,7 @@ import { getNotes } from "../controller/NotesHandler.js";
 const template = document.createElement('template')
 template.innerHTML = `
 <div class="header-option">
+    <button></button>
     <button class="new-note-btn">
         <i class="bi bi-journal-bookmark-fill"></i>
         <span>Baru</span>
