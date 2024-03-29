@@ -37,15 +37,17 @@ export class NoteList extends HTMLElement {
 
     connectedCallback() {
         this.appendChild(this.element)
+        this.element = this
         this.archiveBtn = this.querySelector('.see-archive-btn')
         this.unarchiveBtn = this.querySelector('.see-unarchive-btn')
-        this.renderNotes()
         this.runNewNoteEvent()
         this.runSortChangeEvent()
         this.runArchiveToggle()
     }
 
     renderNotes() {
+        console.log(this.element)
+        console.log(this.element.querySelector('.notes-container'))
         if (this.getAttribute('folder-type') == 'archive') {
             this.renderArchiveNotes()
         } else {
@@ -54,7 +56,7 @@ export class NoteList extends HTMLElement {
     }
 
     renderUnarchiveNotes() {
-        const notesContainer = this.querySelector('.notes-container');
+        const notesContainer = this.element.querySelector('.notes-container');
         notesContainer.innerHTML = '';
         getNotes().then(notes => {
             if (notes.data.length >= 1) {
@@ -77,7 +79,7 @@ export class NoteList extends HTMLElement {
     }
 
     renderArchiveNotes() {
-        const notesContainer = this.querySelector('.notes-container');
+        const notesContainer = this.element.querySelector('.notes-container');
         notesContainer.innerHTML = '';
         getArchivedNotes().then(notes => {
             if (notes.data.length >= 1) {

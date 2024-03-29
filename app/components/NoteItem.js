@@ -1,5 +1,5 @@
 import { findNoteById, formatDate } from '../../notes-data.js'
-import { deleteNote, getNoteById, setArchiveNote } from '../controller/NotesHandler.js'
+import { deleteNote, getNoteById, setArchiveNote, setUnarchiveNote } from '../controller/NotesHandler.js'
 import { NoteOption } from './NoteOption.js'
 customElements.define('note-option', NoteOption)
 
@@ -13,7 +13,6 @@ template.innerHTML = `
     </div>
     <note-option style="position:absolute; color: black; top:20px; right:20px; border-radius: 100%; width: 24px; height: 24px; display:flex; align-items:center; justify-content:center;">
         <note-option-menu slot="option-menu" value="hapus" bs-icon="bi bi-trash" text="Hapus" style="background-color:red;  padding: 4px 10px;border-radius:4px; color:white;"></note-option-menu>
-        <note-option-menu slot="option-menu" value="arsipkan" bs-icon="bi bi-folder" text="Archive"  style="background-color:orange; padding: 4px 10px;border-radius:4px; color:white;"></note-option-menu>
     </note-option>
 </div>
 `
@@ -44,6 +43,20 @@ export class NoteItem extends HTMLElement {
                 note_body.innerText = result.data.body
                 note_createAt.innerText = formatDate(result.data.createdAt).replace('pukul', ' | ')
 
+                const archive_btn = `
+                    <note-option-menu slot="option-menu" class="archive-toggle" value="archive" bs-icon="bi bi-folder" text="Archive"  style="background-color:orange; padding: 4px 10px;border-radius:4px; color:white;"></note-option-menu>
+                    `
+
+                const unarchive_btn = `
+                    <note-option-menu slot="option-menu" class="archive-toggle" value="unarchive" bs-icon="bi bi-folder" text="Unarchive"  style="background-color:orange; padding: 4px 10px;border-radius:4px; color:white;"></note-option-menu>
+                    `
+
+                if (document.querySelector('note-list').getAttribute('folder-type') == 'archive') {
+                    note_option.innerHTML += unarchive_btn
+                } else {
+                    note_option.innerHTML += archive_btn
+                }
+
                 this.runClickEvent(note_card)
                 this.runOptionEvent(note_option)
 
@@ -72,8 +85,15 @@ export class NoteItem extends HTMLElement {
                         }
                     }).catch(error => console.error(error))
                     break;
-                case 'arsipkan':
+                case 'archive':
                     setArchiveNote(this.id).then(result => {
+                        if (result.status = 'success') {
+                            document.querySelector('note-list').setAttribute('refresh', true)
+                        }
+                    }).catch(error => console.error(error))
+                    break;
+                case 'unarchive':
+                    setUnarchiveNote(this.id).then(result => {
                         if (result.status = 'success') {
                             document.querySelector('note-list').setAttribute('refresh', true)
                         }

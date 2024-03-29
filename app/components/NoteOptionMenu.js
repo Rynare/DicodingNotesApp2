@@ -9,6 +9,7 @@ export class NoteOptionMenu extends HTMLElement {
     }
 
     render() {
+        this.innerHTML = ''
         const template = document.createElement('template')
         template.innerHTML = `
             <i class="${this.getAttribute('bs-icon')}"></i>

@@ -15,6 +15,7 @@ export class MyNotes extends HTMLDivElement {
         this.render()
     }
 
+
     render() {
         const templateNode = template.content.cloneNode('true')
         this.appendChild(templateNode)
