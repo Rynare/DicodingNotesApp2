@@ -1,4 +1,5 @@
 import { createNote, getNoteById, updateNoteById } from '../controller/NotesHandler.js'
+import { runSwal } from './Swal.js';
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -25,6 +26,7 @@ export class NoteDetail extends HTMLElement {
         super()
         const newTemplate = template.content.cloneNode(true)
         this.appendChild(newTemplate)
+        this.style.position = 'relative'
     }
 
     connectedCallback() {
@@ -46,12 +48,16 @@ export class NoteDetail extends HTMLElement {
     async attributeChangedCallback(name, oldValue, newValue) {
         switch (name) {
             case 'note-id':
+                const loader = document.querySelector('#loader-absolute').content.cloneNode(true)
+                this.appendChild(loader)
                 newValue = newValue.trim();
                 if ((newValue == '' || newValue == null || newValue == undefined) || newValue == 'new') {
+                    this.querySelector('.loader-container').remove()
                     this.render()
                     this.classList.add('active')
                 } else {
                     const note = await getNoteById(newValue)
+                    this.querySelector('.loader-container').remove()
                     if (note.data == null) {
                         document.querySelector(`note-list`).setAttribute('refresh', true)
                         this.render()
@@ -93,6 +99,9 @@ export class NoteDetail extends HTMLElement {
         const submitBtn = this.querySelector('#save-btn')
         form.addEventListener('submit', (event) => {
             event.preventDefault()
+            const loader = document.querySelector('#loader-absolute').content.cloneNode(true)
+            this.appendChild(loader)
+            document.body.focus()
             const formData = new FormData(form, submitBtn)
             const data = {};
             formData.forEach((value, key) => {
@@ -102,6 +111,8 @@ export class NoteDetail extends HTMLElement {
                 createNote(data)
                     .then(status => {
                         this.setAttribute('note-id', status.data.id)
+                        this.querySelector('.loader-container').remove()
+                        runSwal({ type: 'success', title: 'Catatan berhasil Disimpan.' })
                         if (window.innerWidth >= 768) {
                             document.querySelector('note-list').setAttribute('refresh', true)
                         }
@@ -111,6 +122,8 @@ export class NoteDetail extends HTMLElement {
                     });
             } else {
                 updateNoteById(this.getAttribute('note-id'), data).then(newNote => {
+                    this.querySelector('.loader-container').remove()
+                    runSwal({ type: 'success', title: 'Catatan berhasil Diperbarui.' })
                     this.setAttribute('note-id', newNote.data.id)
                     if (window.innerWidth >= 768) {
                         document.querySelector('note-list').setAttribute('refresh', true)

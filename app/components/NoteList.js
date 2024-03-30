@@ -46,8 +46,6 @@ export class NoteList extends HTMLElement {
     }
 
     renderNotes() {
-        console.log(this.element)
-        console.log(this.element.querySelector('.notes-container'))
         if (this.getAttribute('folder-type') == 'archive') {
             this.renderArchiveNotes()
         } else {

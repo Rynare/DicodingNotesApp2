@@ -21,12 +21,19 @@
         <div is="my-notes"></div>
     </div>
     <template id="loader">
-        <div
-            style="position:relative; height:100%; width:100%; display:flex; align-items:center; justify-content:center;">
+        <div style="position:relative; height:100%; width:100%; display:flex; align-items:center; justify-content:center;"
+            class="loader-container">
+            <div class="loader"></div>
+        </div>
+    </template>
+    <template id="loader-absolute">
+        <div class="loader-container"
+            style="position: absolute; z-index: 9999;top: 0; bottom: 0; left:0; right:0; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.176);">
             <div class="loader"></div>
         </div>
     </template>
     <script type="module" src="./main.js"></script>
+    <script src="./node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
 </body>
 
 </html>
