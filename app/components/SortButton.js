@@ -12,7 +12,7 @@ template.innerHTML = `
         }
 
         button.sort-btn {
-            color: white;
+            color: inherit;
             background-color: transparent;
             height: fit-content;
             border: none;

@@ -6,7 +6,7 @@ template.innerHTML = `
     <header>
         <i class="bi bi-arrow-left back-btn"></i>
         <div>
-            <button type="submit" id="save-btn"><i class="bi bi-floppy-fill"></i></button>
+            <button type="submit" id="save-btn"><i class="bi bi-floppy-fill"></i>&nbsp;Save</button>
         </div>
     </header>
     <div id="detail-container">

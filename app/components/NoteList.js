@@ -58,7 +58,10 @@ export class NoteList extends HTMLElement {
     renderUnarchiveNotes() {
         const notesContainer = this.element.querySelector('.notes-container');
         notesContainer.innerHTML = '';
+        const loader = document.querySelector('#loader').content.cloneNode(true)
+        notesContainer.appendChild(loader)
         getNotes().then(notes => {
+            notesContainer.innerHTML = '';
             if (notes.data.length >= 1) {
                 notes.data.forEach(obj => {
                     const note_item = document.createElement('note-item');
@@ -81,7 +84,11 @@ export class NoteList extends HTMLElement {
     renderArchiveNotes() {
         const notesContainer = this.element.querySelector('.notes-container');
         notesContainer.innerHTML = '';
+        const loader = document.querySelector('#loader').content.cloneNode(true)
+        notesContainer.appendChild(loader)
+
         getArchivedNotes().then(notes => {
+            notesContainer.innerHTML = '';
             if (notes.data.length >= 1) {
                 notes.data.forEach(obj => {
                     const note_item = document.createElement('note-item');

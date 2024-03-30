@@ -79,25 +79,31 @@ export class NoteItem extends HTMLElement {
         element.addEventListener('note-option-changed', event => {
             switch (event.detail.noteOption) {
                 case 'hapus':
-                    deleteNote(this.id).then(result => {
-                        if (result.status = 'success') {
-                            document.querySelector('note-list').setAttribute('refresh', true)
-                        }
-                    }).catch(error => console.error(error))
+                    if (confirm('Yakin ingin menghapus note/catatan ini?')) {
+                        deleteNote(this.id).then(result => {
+                            if (result.status = 'success') {
+                                document.querySelector('note-list').setAttribute('refresh', true)
+                            }
+                        }).catch(error => console.error(error))
+                    }
                     break;
                 case 'archive':
-                    setArchiveNote(this.id).then(result => {
-                        if (result.status = 'success') {
-                            document.querySelector('note-list').setAttribute('refresh', true)
-                        }
-                    }).catch(error => console.error(error))
+                    if (confirm('Yakin ingin mengarsipkan note/catatan ini?')) {
+                        setArchiveNote(this.id).then(result => {
+                            if (result.status = 'success') {
+                                document.querySelector('note-list').setAttribute('refresh', true)
+                            }
+                        }).catch(error => console.error(error))
+                    }
                     break;
                 case 'unarchive':
-                    setUnarchiveNote(this.id).then(result => {
-                        if (result.status = 'success') {
-                            document.querySelector('note-list').setAttribute('refresh', true)
-                        }
-                    }).catch(error => console.error(error))
+                    if (confirm('Yakin ingin mengeluarkan note/catatan ini dari arsip?')) {
+                        setUnarchiveNote(this.id).then(result => {
+                            if (result.status = 'success') {
+                                document.querySelector('note-list').setAttribute('refresh', true)
+                            }
+                        }).catch(error => console.error(error))
+                    }
                     break;
                 default:
                     break;
