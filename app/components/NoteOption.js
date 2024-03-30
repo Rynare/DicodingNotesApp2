@@ -22,6 +22,7 @@ template.innerHTML = `
             -o-border-radius: 4px;
             font-size: 16px;
             position:relative;
+            cursor: pointer;
         }
 
         .note-option-menu {
@@ -51,6 +52,7 @@ template.innerHTML = `
         ::slotted([slot=option-menu]){
             display:flex;
             gap:6px;
+            cursor: pointer;
         }
 
     </style>

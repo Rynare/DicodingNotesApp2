@@ -56,6 +56,8 @@ export class NoteList extends HTMLElement {
     renderUnarchiveNotes() {
         const notesContainer = this.element.querySelector('.notes-container');
         notesContainer.innerHTML = '';
+        this.archiveBtn.style.display = ""
+        this.unarchiveBtn.style.display = "none"
         const loader = document.querySelector('#loader').content.cloneNode(true)
         notesContainer.appendChild(loader)
         getNotes().then(notes => {
@@ -86,6 +88,8 @@ export class NoteList extends HTMLElement {
         notesContainer.appendChild(loader)
 
         getArchivedNotes().then(notes => {
+            this.archiveBtn.style.display = "none"
+            this.unarchiveBtn.style.display = ""
             notesContainer.innerHTML = '';
             if (notes.data.length >= 1) {
                 notes.data.forEach(obj => {
@@ -114,13 +118,6 @@ export class NoteList extends HTMLElement {
                 this.renderUnarchiveNotes()
                 break
             case 'folder-type':
-                if (newValue == 'archive') {
-                    this.archiveBtn.style.display = "none"
-                    this.unarchiveBtn.style.display = ""
-                } else {
-                    this.archiveBtn.style.display = ""
-                    this.unarchiveBtn.style.display = "none"
-                }
                 this.renderNotes()
                 break
             case 'refresh':
@@ -155,6 +152,7 @@ export class NoteList extends HTMLElement {
         const btn = this.querySelector('.new-note-btn')
         btn.addEventListener('click', () => {
             document.querySelector('note-detail').setAttribute('note-id', 'new')
+            document.querySelector('input#detail-title').focus()
         })
     }
 

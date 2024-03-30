@@ -7,7 +7,7 @@ template.innerHTML = `
     <header>
         <i class="bi bi-arrow-left back-btn"></i>
         <div>
-            <button type="submit" id="save-btn"><i class="bi bi-floppy-fill"></i>&nbsp;Save</button>
+            <button type="submit" id="save-btn"><i class="bi bi-floppy"></i>&nbsp;Save</button>
         </div>
     </header>
     <div id="detail-container">
@@ -59,6 +59,7 @@ export class NoteDetail extends HTMLElement {
                     const note = await getNoteById(newValue)
                     this.querySelector('.loader-container').remove()
                     if (note.data == null) {
+                        runSwal({ type: 'error', title: 'Catatan tidak ditemukan.' })
                         document.querySelector(`note-list`).setAttribute('refresh', true)
                         this.render()
                         this.setAttribute(name, '')

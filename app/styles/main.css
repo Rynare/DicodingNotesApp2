@@ -15,10 +15,22 @@
 * {
     box-sizing: border-box;
     font-family: "Roboto", sans-serif;
+    cursor: default;
 }
 
 i.bi {
     font-size: 16px;
+}
+
+button,
+[class*=btn],
+[id*=btn] {
+    cursor: pointer;
+}
+
+input,
+textarea {
+    cursor: text;
 }
 
 html,
@@ -154,6 +166,11 @@ note-list {
 
 note-list :is(.see-unarchive-btn, .see-archive-btn) {
     flex-grow: 1;
+    background-color: #3b996e !important;
+}
+
+note-list .new-note-btn {
+    background-color: #4091c2 !important;
 }
 
 note-list .notes-container {
@@ -221,6 +238,16 @@ note-detail #save-btn {
     justify-content: center;
     font-size: 15px;
     font-weight: bold;
+    color: white;
+    padding: 5px 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #4091c2;
+    border-radius: 4px !important;
+    -webkit-border-radius: 4px !important;
+    -moz-border-radius: 4px !important;
+    -ms-border-radius: 4px !important;
+    -o-border-radius: 4px !important;
 }
 
 note-detail.active {
@@ -229,10 +256,13 @@ note-detail.active {
 
 note-detail form {
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 note-detail header {
-    height: 40px;
+    min-height: 40px;
+    max-height: fit-content;
     display: flex;
     align-items: center;
     padding: 0 20px;
@@ -271,6 +301,10 @@ note-detail textarea {
 }
 
 /* HTML: <div class="loader"></div> */
+.loader-container {
+    cursor: wait;
+}
+
 .loader {
     --c1: #673b14;
     --c2: #f8b13b;

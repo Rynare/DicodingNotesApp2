@@ -13,6 +13,7 @@ template.innerHTML = `
 
         button.sort-btn {
             color: inherit;
+            cursor:pointer;
             background-color: transparent;
             height: fit-content;
             border: none;
@@ -52,6 +53,7 @@ template.innerHTML = `
         ::slotted([slot=sort-mode]){
             display:flex;
             gap:6px;
+            cursor: pointer;
         }
 
     </style>

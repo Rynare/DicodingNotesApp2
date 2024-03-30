@@ -1,6 +1,8 @@
 import { findNoteById, formatDate } from '../../notes-data.js'
 import { deleteNote, getNoteById, setArchiveNote, setUnarchiveNote } from '../controller/NotesHandler.js'
 import { NoteOption } from './NoteOption.js'
+import { runSwal } from './Swal.js'
+
 customElements.define('note-option', NoteOption)
 
 const template = document.createElement('template')
@@ -82,6 +84,7 @@ export class NoteItem extends HTMLElement {
                     if (confirm('Yakin ingin menghapus note/catatan ini?')) {
                         deleteNote(this.id).then(result => {
                             if (result.status = 'success') {
+                                runSwal({ type: 'success', title: 'Catatan berhasil Dihapus.' })
                                 document.querySelector('note-list').setAttribute('refresh', true)
                             }
                         }).catch(error => console.error(error))
@@ -91,6 +94,7 @@ export class NoteItem extends HTMLElement {
                     if (confirm('Yakin ingin mengarsipkan note/catatan ini?')) {
                         setArchiveNote(this.id).then(result => {
                             if (result.status = 'success') {
+                                runSwal({ type: 'success', title: 'Catatan berhasil diarsipkan.' })
                                 document.querySelector('note-list').setAttribute('refresh', true)
                             }
                         }).catch(error => console.error(error))
@@ -100,6 +104,7 @@ export class NoteItem extends HTMLElement {
                     if (confirm('Yakin ingin mengeluarkan note/catatan ini dari arsip?')) {
                         setUnarchiveNote(this.id).then(result => {
                             if (result.status = 'success') {
+                                runSwal({ type: 'success', title: 'Catatan berhasil Dikeluarkan dari arsip.' })
                                 document.querySelector('note-list').setAttribute('refresh', true)
                             }
                         }).catch(error => console.error(error))
