@@ -1,4 +1,4 @@
-import { createNote, getNoteById, updateNoteById } from '../controller/NotesHandler.js'
+import { createNote, getNoteById, setArchiveNote, setUnarchiveNote, updateNoteById } from '../controller/NotesHandler.js'
 import { runSwal } from './Swal.js';
 
 const template = document.createElement('template')
@@ -126,6 +126,9 @@ export class NoteDetail extends HTMLElement {
                     this.querySelector('.loader-container').remove()
                     runSwal({ type: 'success', title: 'Catatan berhasil Diperbarui.' })
                     this.setAttribute('note-id', newNote.data.id)
+                    if (document.querySelector('note-list').getAttribute('folder-type') == 'archive') {
+                        setArchiveNote(newNote.data.id)
+                    }
                     if (window.innerWidth >= 768) {
                         document.querySelector('note-list').setAttribute('refresh', true)
                     }
