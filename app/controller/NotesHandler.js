@@ -289,3 +289,41 @@ export function updateNoteById(note_id, new_data) {
         throw new Error(error)
     })
 }
+export function getSortedByCreateAtDesc(folderType) {
+    if (folderType == 'archive') {
+        return getArchivedNotes().then(result => {
+            const sorted = [...result.data]
+            return sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        })
+            .catch(error => {
+                throw new Error('Error fetching archived notes:', error);
+            });
+    } else {
+        return getNotes().then(result => {
+            const sorted = [...result.data]
+            return sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        })
+            .catch(error => {
+                throw new Error('Error fetching notes:', error);
+            });
+    }
+}
+export function getSortedByCreateAtAsc(folderType) {
+    if (folderType == 'archive') {
+        return getArchivedNotes().then(result => {
+            const sorted = [...result.data];
+            return sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        })
+            .catch(error => {
+                throw new Error('Error fetching archived notes:', error);
+            });
+    } else {
+        return getNotes().then(result => {
+            const sorted = [...result.data];
+            return sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        })
+            .catch(error => {
+                throw new Error('Error fetching notes:', error);
+            });
+    }
+}

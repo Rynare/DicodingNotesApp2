@@ -1,4 +1,4 @@
-import { getSortedByCreateAtAsc, getSortedByCreateAtDesc, notesData } from "../../notes-data.js";
+import { getSortedByCreateAtAsc, getSortedByCreateAtDesc } from "../controller/NotesHandler.js";
 import { getArchivedNotes, getNotes } from "../controller/NotesHandler.js";
 
 const template = document.createElement('template')
@@ -25,7 +25,7 @@ export class NoteList extends HTMLElement {
         "active-note-item",
         'folder-type',
         'refresh',
-        // "sort-by"
+        "sort-by"
     ];
 
     constructor() {
@@ -46,68 +46,89 @@ export class NoteList extends HTMLElement {
     }
 
     renderNotes() {
+        const notesContainer = this.element.querySelector('.notes-container');
+        notesContainer.innerHTML = '';
+
+        const loader = document.querySelector('#loader').content.cloneNode(true)
+        notesContainer.appendChild(loader)
+
         if (this.getAttribute('folder-type') == 'archive') {
-            this.renderArchiveNotes()
+            if (this.getAttribute('sort-by') == 'terbaru') {
+                getSortedByCreateAtDesc('archive')
+                    .then(result => {
+                        this.renderArchiveNotes(result)
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+            } else {
+                getSortedByCreateAtAsc('archive')
+                    .then(result => {
+                        this.renderArchiveNotes(result)
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+            }
         } else {
-            this.renderUnarchiveNotes()
+            if (this.getAttribute('sort-by') == 'terbaru') {
+                getSortedByCreateAtDesc('unarchive')
+                    .then(result => {
+                        this.renderUnarchiveNotes(result)
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+            } else {
+                getSortedByCreateAtAsc('unarchive')
+                    .then(result => {
+                        this.renderUnarchiveNotes(result)
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+
         }
     }
 
-    renderUnarchiveNotes() {
+    renderUnarchiveNotes(notes = null) {
         const notesContainer = this.element.querySelector('.notes-container');
-        notesContainer.innerHTML = '';
         this.archiveBtn.style.display = ""
         this.unarchiveBtn.style.display = "none"
-        const loader = document.querySelector('#loader').content.cloneNode(true)
-        notesContainer.appendChild(loader)
-        getNotes().then(notes => {
-            notesContainer.innerHTML = '';
-            if (notes.data.length >= 1) {
-                notes.data.forEach(obj => {
-                    const note_item = document.createElement('note-item');
-                    note_item.setAttribute('note-item-id', obj.id);
-                    notesContainer.appendChild(note_item);
-                });
-            } else {
-                notesContainer.innerHTML = (`
-                        <div style="margin:auto 0; text-align:center;">Tidak ada notes, ingin membuat notes baru?</div>
-                    `)
-            }
-        }).catch(error => {
-            console.error('Error rendering notes:', error)
+        notesContainer.innerHTML = '';
+        if (notes.length >= 1) {
+            notes.forEach(obj => {
+                const note_item = document.createElement('note-item');
+                note_item.setAttribute('note-item-id', obj.id);
+                notesContainer.appendChild(note_item);
+            });
+        } else {
             notesContainer.innerHTML = (`
-                        <div style="margin:auto 0; text-align:center;">Tidak ada notes, ingin membuat notes baru?</div>
-                    `)
-        });
+                    <div style="margin:auto 0; text-align:center;">Tidak ada notes, ingin membuat notes baru?</div>
+                `)
+        }
     }
 
-    renderArchiveNotes() {
+    renderArchiveNotes(notes = null) {
         const notesContainer = this.element.querySelector('.notes-container');
+        this.archiveBtn.style.display = "none"
+        this.unarchiveBtn.style.display = ""
         notesContainer.innerHTML = '';
-        const loader = document.querySelector('#loader').content.cloneNode(true)
-        notesContainer.appendChild(loader)
-
-        getArchivedNotes().then(notes => {
-            this.archiveBtn.style.display = "none"
-            this.unarchiveBtn.style.display = ""
-            notesContainer.innerHTML = '';
-            if (notes.data.length >= 1) {
-                notes.data.forEach(obj => {
-                    const note_item = document.createElement('note-item');
-                    note_item.setAttribute('note-item-id', obj.id);
-                    notesContainer.appendChild(note_item);
-                });
-            } else {
-                notesContainer.innerHTML = (`
-                        <div style="margin:auto 0; text-align:center;">Tidak ada notes yang diarsipkan</div>
-                    `)
-            }
-        }).catch(error => {
-            console.error('Error rendering notes:', error)
+        if (notes.length >= 1) {
+            notes.forEach(obj => {
+                const note_item = document.createElement('note-item');
+                note_item.setAttribute('note-item-id', obj.id);
+                notesContainer.appendChild(note_item);
+            });
+        } else {
             notesContainer.innerHTML = (`
-                        <div style="margin:auto 0; text-align:center;">Tidak ada notes yang diarsipkan</div>
-                    `)
-        });
+                    <div style="margin:auto 0; text-align:center;">Tidak ada notes yang diarsipkan</div>
+                `)
+        }
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -115,7 +136,7 @@ export class NoteList extends HTMLElement {
             case 'selected-note-item':
                 break
             case 'sort-by':
-                this.renderUnarchiveNotes()
+                this.renderNotes()
                 break
             case 'folder-type':
                 this.renderNotes()
