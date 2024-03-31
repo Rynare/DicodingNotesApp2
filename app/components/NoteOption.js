@@ -1,7 +1,7 @@
-import { NoteOptionMenu } from './NoteOptionMenu.js'
-customElements.define('note-option-menu', NoteOptionMenu)
+import { NoteOptionMenu } from "./NoteOptionMenu.js";
+customElements.define("note-option-menu", NoteOptionMenu);
 
-const template = document.createElement('template')
+const template = document.createElement("template");
 template.innerHTML = `
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
@@ -64,41 +64,47 @@ template.innerHTML = `
                 <slot name="option-menu"></slot>
             </div>
         </div>
-`
+`;
 
 export class NoteOption extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
 
-    constructor() {
-        super()
-        this.attachShadow({ mode: "open" })
-    }
+  connectedCallback() {
+    this.render();
+  }
 
-    connectedCallback() {
-        this.render()
-    }
+  render() {
+    const newTemplate = template.content.cloneNode(true);
+    newTemplate.querySelector(".option-btn i").style.color = this.style.color;
+    this.shadowRoot.appendChild(newTemplate);
+    this.runOptionBtnEvent();
+  }
 
-    render() {
-        const newTemplate = template.content.cloneNode(true)
-        newTemplate.querySelector('.option-btn i').style.color = this.style.color
-        this.shadowRoot.appendChild(newTemplate)
-        this.runOptionBtnEvent()
-    }
+  runOptionBtnEvent() {
+    this.shadowRoot
+      .querySelector(".option-btn")
+      .addEventListener("click", (event) => {
+        this.shadowRoot
+          .querySelector(".note-option-menu")
+          .classList.toggle("active");
+      });
 
-    runOptionBtnEvent() {
-        this.shadowRoot.querySelector('.option-btn').addEventListener('click', (event) => {
-            this.shadowRoot.querySelector('.note-option-menu').classList.toggle('active')
-        });
+    this.shadowRoot.addEventListener("note-option-changed", () => {
+      this.shadowRoot
+        .querySelector(".note-option-menu")
+        .classList.remove("active");
+    });
 
-        this.shadowRoot.addEventListener('note-option-changed', () => {
-            this.shadowRoot.querySelector('.note-option-menu').classList.remove('active')
-        });
-
-        this.shadowRoot.addEventListener('focusout', (event) => {
-            event.preventDefault()
-            setTimeout(() => {
-                this.shadowRoot.querySelector('.note-option-menu').classList.remove('active');
-            }, 300);
-        });
-
-    }
+    this.shadowRoot.addEventListener("focusout", (event) => {
+      event.preventDefault();
+      setTimeout(() => {
+        this.shadowRoot
+          .querySelector(".note-option-menu")
+          .classList.remove("active");
+      }, 300);
+    });
+  }
 }

@@ -1,4 +1,4 @@
-const template = document.createElement('template')
+const template = document.createElement("template");
 template.innerHTML = `
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
@@ -65,40 +65,40 @@ template.innerHTML = `
                 <slot name="sort-mode"></slot>
             </div>
         </div>
-`
+`;
 
 export class SortButton extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
 
-    constructor() {
-        super()
-        this.attachShadow({ mode: "open" })
-    }
+  connectedCallback() {
+    this.render();
+  }
 
-    connectedCallback() {
-        this.render()
-    }
+  render() {
+    const newTemplate = template.content.cloneNode(true);
+    this.shadowRoot.appendChild(newTemplate);
+    this.runSortBtnEvent();
+  }
 
-    render() {
-        const newTemplate = template.content.cloneNode(true)
-        this.shadowRoot.appendChild(newTemplate)
-        this.runSortBtnEvent()
-    }
+  runSortBtnEvent() {
+    this.shadowRoot
+      .querySelector(".sort-btn")
+      .addEventListener("click", (event) => {
+        this.shadowRoot.querySelector(".sort-menu").classList.toggle("active");
+      });
 
-    runSortBtnEvent() {
-        this.shadowRoot.querySelector('.sort-btn').addEventListener('click', (event) => {
-            this.shadowRoot.querySelector('.sort-menu').classList.toggle('active')
-        });
+    this.shadowRoot.addEventListener("sort-changed", () => {
+      this.shadowRoot.querySelector(".sort-menu").classList.remove("active");
+    });
 
-        this.shadowRoot.addEventListener('sort-changed', () => {
-            this.shadowRoot.querySelector('.sort-menu').classList.remove('active')
-        });
-
-        this.shadowRoot.addEventListener('focusout', (event) => {
-            event.preventDefault()
-            setTimeout(() => {
-                this.shadowRoot.querySelector('.sort-menu').classList.remove('active');
-            }, 300);
-        });
-
-    }
+    this.shadowRoot.addEventListener("focusout", (event) => {
+      event.preventDefault();
+      setTimeout(() => {
+        this.shadowRoot.querySelector(".sort-menu").classList.remove("active");
+      }, 300);
+    });
+  }
 }
