@@ -3,7 +3,7 @@ customElements.define('note-option-menu', NoteOptionMenu)
 
 const template = document.createElement('template')
 template.innerHTML = `
-    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         * {
             box-sizing: border-box !important;
