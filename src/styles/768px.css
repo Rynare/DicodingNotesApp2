@@ -1,0 +1,35 @@
+@media screen and (min-width: 768px) {
+    [is=my-notes] {
+        display: flex;
+        padding: 0 10px;
+        column-gap: 20px;
+    }
+
+    note-list {
+        flex-grow: 1;
+        max-width: 400px;
+        padding-right: 10px;
+    }
+
+    note-detail {
+        flex-grow: 1;
+        z-index: auto;
+        position: static;
+    }
+
+    note-detail.active {
+        z-index: auto;
+    }
+
+    note-detail header {
+        justify-content: end;
+    }
+
+    note-detail header #save-btn i.bi {
+        font-size: 20px !important;
+    }
+
+    note-detail .back-btn {
+        display: none;
+    }
+}
