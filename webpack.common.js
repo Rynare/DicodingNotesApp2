@@ -9,7 +9,6 @@ module.exports = {
     },
     module: {
         rules: [
-            /* style and css loader */
             {
                 test: /\.css$/,
                 use: [
@@ -28,6 +27,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
+            title: "MyNotes App",
             template: './src/template.html',
             filename: 'index.html',
         }),
