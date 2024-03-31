@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 export function runSwal(config) {
     const Toast = Swal.mixin({
         toast: config.isToast || true,
