@@ -1,4 +1,4 @@
-import { findNoteById, formatDate } from '../../notes-data.js'
+import { formatDate } from '../../notes-data.js'
 import { deleteNote, getNoteById, setArchiveNote, setUnarchiveNote } from '../controller/NotesHandler.js'
 import { NoteOption } from './NoteOption.js'
 import { runSwal } from './Swal.js'
