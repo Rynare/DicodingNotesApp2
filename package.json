@@ -4,9 +4,8 @@
   "description": "Link website [NotesApp Basic - Klik](https://rynare.github.io/dicoding_submission-notesApp/)",
   "main": "src/index.js",
   "scripts": {
-    "start": "node server.js",
-    "build": "webpack",
-    "start-dev": "webpack-dev-server --open --config webpack.config.js"
+    "build": "webpack --config webpack.prod.js",
+    "start-dev": "webpack-dev-server --config webpack.dev.js"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +22,7 @@
     "style-loader": "^3.3.4",
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4"
+    "webpack-dev-server": "^5.0.4",
+    "webpack-merge": "^5.10.0"
   }
 }
