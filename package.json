@@ -2,9 +2,11 @@
   "name": "dicoding_submission-notesapp-rest",
   "version": "1.0.0",
   "description": "Link website [NotesApp Basic - Klik](https://rynare.github.io/dicoding_submission-notesApp/)",
-  "main": "main.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "build": "webpack",
+    "start-dev": "webpack-dev-server --open --config webpack.config.js"
   },
   "keywords": [],
   "author": "",
@@ -12,5 +14,13 @@
   "dependencies": {
     "bootstrap-icons": "^1.11.3",
     "sweetalert2": "^11.10.7"
+  },
+  "devDependencies": {
+    "css-loader": "^6.10.0",
+    "html-webpack-plugin": "^5.6.0",
+    "style-loader": "^3.3.4",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
   }
 }
