@@ -14,7 +14,7 @@ module.exports = merge(common, {
             directory: path.join(__dirname, "dist"),
         },
         compress: true,
-        port: 8080,
+        port: 8888,
         open: true,
         watchFiles: ['index.html', 'src/**/*'],
         open: true,

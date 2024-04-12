@@ -55,10 +55,10 @@ export class NoteDetail extends HTMLElement {
           .querySelector("#loader-absolute")
           .content.cloneNode(true);
         this.appendChild(loader);
-        newValue = newValue.trim();
+        newValue = newValue?.trim();
         if (
-          newValue == "" ||
           newValue == null ||
+          newValue == '' ||
           newValue == undefined ||
           newValue == "new"
         ) {
@@ -87,7 +87,7 @@ export class NoteDetail extends HTMLElement {
   runBackEvent() {
     const backBtn = this.querySelector(".back-btn");
     backBtn.addEventListener("click", () => {
-      this.setAttribute("note-id", "");
+      this.removeAttribute('note-id');
       document.querySelector("note-list").setAttribute("refresh", true);
       this.classList.remove("active");
     });

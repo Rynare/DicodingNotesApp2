@@ -138,7 +138,7 @@ export class NoteList extends HTMLElement {
         break;
       case "folder-type":
         this.renderNotes();
-        document.querySelector('note-detail').setAttribute('note-id', '')
+        document.querySelector('note-detail').removeAttribute('note-id')
         break;
       case "refresh":
         if (newValue == "true") {
