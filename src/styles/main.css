@@ -62,7 +62,7 @@ body {
   gap: 10px;
 }
 
-#app > header {
+#app>header {
   text-align: center;
   color: var(---green-color);
   text-align: center;
@@ -79,7 +79,7 @@ body {
   justify-content: center;
 }
 
-#app > header h3 {
+#app>header h3 {
   margin: 0;
 }
 
@@ -164,7 +164,14 @@ note-list {
 
 note-list :is(.see-unarchive-btn, .see-archive-btn) {
   flex-grow: 1;
+}
+
+note-list .see-unarchive-btn {
   background-color: #3b996e !important;
+}
+
+note-list .see-archive-btn {
+  background-color: #e4af0b !important;
 }
 
 note-list :is(.see-unarchive-btn, .see-archive-btn, .new-note-btn):hover {
@@ -314,13 +321,10 @@ note-detail textarea {
   height: 80px;
   border-top: 4px solid var(--c1);
   border-bottom: 4px solid var(--c1);
-  background: linear-gradient(
-      90deg,
+  background: linear-gradient(90deg,
       var(--c1) 2px,
       var(--c2) 0 5px,
-      var(--c1) 0
-    )
-    50%/7px 8px no-repeat;
+      var(--c1) 0) 50%/7px 8px no-repeat;
   display: grid;
   overflow: hidden;
   animation: l5-0 2s infinite linear;
@@ -369,6 +373,7 @@ note-detail textarea {
 }
 
 @keyframes l5-1 {
+
   10%,
   70% {
     background-size:
